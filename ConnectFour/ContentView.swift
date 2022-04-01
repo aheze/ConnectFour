@@ -33,70 +33,105 @@ struct ContentView: View {
                 .font(.system(size: 64, weight: .bold, design: .monospaced))
 
             if let winner = model.winner {
-                VStack {
+                HStack(spacing: 20) {
                     switch winner {
                     case .red:
-                        Text("**RED** you won!")
+                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 2)
+                            .frame(width: 40, height: 40)
+
+                        Text("RED you won!")
                             .foregroundColor(.red)
-                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                     case .yellow:
-                        Text("**YELLOW** you won!")
+                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 2)
+                            .frame(width: 40, height: 40)
+
+                        Text("YELLOW you won!")
                             .foregroundColor(.yellow)
-                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                     default:
-                        EmptyView()
+                        Text("TIE")
+                            .foregroundColor(.blue)
                     }
-                }.font(.largeTitle)
+                }
+                .font(.largeTitle.weight(.semibold))
             } else if let activeSymbol = model.activeSymbol {
-                VStack {
+                HStack(spacing: 20) {
                     switch activeSymbol {
                     case .red:
-                        Text("**RED** it's your turn")
+                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 2)
+                            .frame(width: 40, height: 40)
+
+                        Text("RED it's your turn")
                             .foregroundColor(.red)
                     case .yellow:
-                        Text("**YELLOW** it's your turn")
+                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 2)
+                            .frame(width: 40, height: 40)
+                        Text("YELLOW it's your turn")
                             .foregroundColor(.yellow)
                     default:
                         EmptyView()
                     }
-                }.font(.largeTitle)
+                }
+                .font(.largeTitle.weight(.semibold))
             }
 
             HStack(spacing: 10) {
                 ForEach(0..<7, id: \.self) { column in
-                    VStack(spacing: 10) {
-                        Button {
-                            model.addPiece(in: column)
-                            if let activeSymbol = model.activeSymbol {
-                                switch activeSymbol {
-                                case .red:
-                                    model.activeSymbol = .yellow
-                                case .yellow:
-                                    model.activeSymbol = .red
-                                case .tie:
-                                    model.activeSymbol = .red
-                                }
+
+                    Button {
+                        model.addPiece(in: column)
+                        if let activeSymbol = model.activeSymbol {
+                            switch activeSymbol {
+                            case .red:
+                                model.activeSymbol = .yellow
+                            case .yellow:
+                                model.activeSymbol = .red
+                            case .tie:
+                                model.activeSymbol = .red
                             }
-
-                            model.winner = model.checkEnd()
-
-                        } label: {
-                            Color.green
-                                .frame(height: 40)
-                                .cornerRadius(16)
-                                .padding()
                         }
 
-                        ForEach(Array(0..<6).reversed(), id: \.self) { row in
-                            let location = Location(row: row, column: column)
-                            let piece = model.pieces.first(where: { $0.location == location })
+                        model.winner = model.checkEnd()
 
-                            SquareView(location: location, symbol: piece?.symbol)
+                    } label: {
+                        VStack(spacing: 10) {
+                            let delay = Double(column) * 0.25
+
+                            VStack {
+                                if let winner = model.winner {
+                                    switch winner {
+                                    case .red:
+                                        Color.red
+                                    case .yellow:
+                                        Color.yellow
+                                    case .tie:
+                                        Color.blue
+                                    }
+                                } else {
+                                    Color.blue
+                                }
+                            }
+                            .frame(height: 40)
+                            .cornerRadius(16)
+                            .overlay(
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.white)
+                                    .font(.title)
+                            )
+                            .scaleEffect(model.winner != nil ? 1 : 0.8)
+                            .animation(.spring().delay(delay), value: model.winner)
+
+                            ForEach(Array(0..<6).reversed(), id: \.self) { row in
+                                let location = Location(row: row, column: column)
+                                let piece = model.pieces.first(where: { $0.location == location })
+
+                                SquareView(location: location, symbol: piece?.symbol)
+                            }
                         }
                     }
                 }
             }
         }
+        .padding(20)
     }
 }
 
@@ -136,8 +171,8 @@ struct SquareView: View {
 struct CirclePiece: View {
     let color: Color
     let borderColor: Color
-    let lineWidth = CGFloat(6)
-    
+    var lineWidth = CGFloat(6)
+
     var body: some View {
         Circle()
             .fill(color)
@@ -149,10 +184,16 @@ struct CirclePiece: View {
                             lineWidth: lineWidth,
                             lineCap: .butt,
                             lineJoin: .miter,
-                            miterLimit: 10,
-                            dash: [10],
+                            miterLimit: lineWidth * 2,
+                            dash: [lineWidth * 2],
                             dashPhase: 0
                         )
+                    )
+                    .shadow(
+                        color: Color(uiColor: .label).opacity(0.4),
+                        radius: 1,
+                        x: 0,
+                        y: 0
                     )
                     .padding(lineWidth / 2)
             )
