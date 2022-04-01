@@ -12,6 +12,7 @@
 		3C798F1D27F761F8007BF68D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C798F1C27F761F8007BF68D /* Assets.xcassets */; };
 		3C798F2027F761F8007BF68D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C798F1F27F761F8007BF68D /* Preview Assets.xcassets */; };
 		3C798F2727F763DD007BF68D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C798F2627F763DD007BF68D /* ViewModel.swift */; };
+		3C798F2927F773B6007BF68D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C798F2827F773B6007BF68D /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		3C798F1C27F761F8007BF68D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3C798F1F27F761F8007BF68D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3C798F2627F763DD007BF68D /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		3C798F2827F773B6007BF68D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			children = (
 				3C798F1827F761F6007BF68D /* ConnectFourApp.swift */,
 				3C798F1A27F761F6007BF68D /* ContentView.swift */,
+				3C798F2827F773B6007BF68D /* Model.swift */,
 				3C798F2627F763DD007BF68D /* ViewModel.swift */,
 				3C798F1C27F761F8007BF68D /* Assets.xcassets */,
 				3C798F1E27F761F8007BF68D /* Preview Content */,
@@ -143,6 +146,7 @@
 				3C798F1B27F761F6007BF68D /* ContentView.swift in Sources */,
 				3C798F2727F763DD007BF68D /* ViewModel.swift in Sources */,
 				3C798F1927F761F6007BF68D /* ConnectFourApp.swift in Sources */,
+				3C798F2927F773B6007BF68D /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

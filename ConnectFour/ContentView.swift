@@ -8,22 +8,6 @@
 
 import SwiftUI
 
-enum Symbol {
-    case red
-    case yellow
-    case tie
-}
-
-struct Piece {
-    var symbol: Symbol
-    var location: Location /// section = row, item = column
-}
-
-struct Location: Equatable {
-    var row = 0
-    var column = 0
-}
-
 struct ContentView: View {
     @StateObject var model = ViewModel()
 
@@ -41,6 +25,7 @@ struct ContentView: View {
 
                         Text("RED you won!")
                             .foregroundColor(.red)
+
                     case .yellow:
                         CirclePiece(color: .yellow, borderColor: .red, lineWidth: 2)
                             .frame(width: 40, height: 40)
@@ -51,8 +36,18 @@ struct ContentView: View {
                         Text("TIE")
                             .foregroundColor(.blue)
                     }
+
+                    Button {
+                        withAnimation(.spring()) {
+                            model.pieces.removeAll()
+                            model.activeSymbol = .red
+                            model.winner = nil
+                        }
+                    } label: {
+                        Text("Play Again?")
+                    }
                 }
-                .font(.largeTitle.weight(.semibold))
+                .font(.system(size: 36, weight: .semibold))
             } else if let activeSymbol = model.activeSymbol {
                 HStack(spacing: 20) {
                     switch activeSymbol {
@@ -71,7 +66,7 @@ struct ContentView: View {
                         EmptyView()
                     }
                 }
-                .font(.largeTitle.weight(.semibold))
+                .font(.system(size: 36, weight: .semibold))
             }
 
             HStack(spacing: 10) {
@@ -110,12 +105,12 @@ struct ContentView: View {
                                     Color.blue
                                 }
                             }
-                            .frame(height: 40)
+                            .frame(height: 50)
                             .cornerRadius(16)
                             .overlay(
                                 Image(systemName: "chevron.down")
                                     .foregroundColor(.white)
-                                    .font(.title)
+                                    .font(.title.weight(.bold))
                             )
                             .scaleEffect(model.winner != nil ? 1 : 0.8)
                             .animation(.spring().delay(delay), value: model.winner)
@@ -130,8 +125,14 @@ struct ContentView: View {
                     }
                 }
             }
+            .disabled(model.winner != nil)
         }
         .padding(20)
+    }
+
+    func getRemovalDelay(column: Int, row: Int) -> Double {
+        let delay = Double(column) * Double(row) * 0.1
+        return delay
     }
 }
 
@@ -203,7 +204,7 @@ struct CirclePiece: View {
                 x: 0,
                 y: 2
             )
-            .transition(.offset(x: 0, y: -1000))
+            .transition(.offset(x: 0, y: -1000).combined(with: .opacity))
     }
 }
 
