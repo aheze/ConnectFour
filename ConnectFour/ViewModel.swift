@@ -53,25 +53,61 @@ class ViewModel: ObservableObject {
         /// check vertical columns
         for column in 0 ..< 7 {
             let rows = locations.filter { $0.column == column }.sorted { $0.row < $1.row }.map { $0.row }
-            print("rows: \(rows)")
             let consecutive = rows.map { $0 - 1 }.dropFirst() == rows.dropLast()
-            
+
             if rows.count >= 4, consecutive {
                 return true
             }
         }
-        
+
         /// check horizontal rows
         for row in 0 ..< 6 {
-            let columns = locations.filter { $0.row == row }.sorted { $0.column < $1.column }.column { $0.columns }
+            let columns = locations.filter { $0.row == row }.sorted { $0.column < $1.column }.map { $0.column }
             let consecutive = columns.map { $0 - 1 }.dropFirst() == columns.dropLast()
-            
+
             if columns.count >= 4, consecutive {
                 return true
             }
         }
+
+        /// check ascending stairs
+        for column in 0 ..< 4 {
+            for row in 0 ..< 3 {
+                let location0 = Location(row: row, column: column)
+                let location1 = Location(row: row + 1, column: column + 1)
+                let location2 = Location(row: row + 2, column: column + 2)
+                let location3 = Location(row: row + 3, column: column + 3)
+
+                if
+                    locations.contains(location0),
+                    locations.contains(location1),
+                    locations.contains(location2),
+                    locations.contains(location3)
+                {
+                    return true
+                }
+            }
+        }
         
-        
+        /// check descending stairs
+        for column in 3 ..< 7 {
+            for row in 0 ..< 3 {
+                let location0 = Location(row: row, column: column)
+                let location1 = Location(row: row - 1, column: column - 1)
+                let location2 = Location(row: row - 2, column: column - 2)
+                let location3 = Location(row: row - 3, column: column - 3)
+
+                if
+                    locations.contains(location0),
+                    locations.contains(location1),
+                    locations.contains(location2),
+                    locations.contains(location3)
+                {
+                    return true
+                }
+            }
+        }
+
         return false
     }
 }

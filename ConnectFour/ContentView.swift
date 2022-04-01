@@ -61,7 +61,7 @@ struct ContentView: View {
             }
 
             HStack {
-                ForEach(Array(0..<7).reversed(), id: \.self) { column in
+                ForEach(0..<7, id: \.self) { column in
                     VStack {
                         Button {
                             model.addPiece(in: column)
@@ -76,7 +76,7 @@ struct ContentView: View {
                                 }
                             }
                             
-                            let winner = model.checkEnd()
+                            model.winner = model.checkEnd()
                             
                             
                         } label: {
