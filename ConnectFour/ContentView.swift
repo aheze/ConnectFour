@@ -30,7 +30,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("Connect 4")
-                .font(.largeTitle)
+                .font(.system(size: 64, weight: .bold, design: .monospaced))
 
             if let winner = model.winner {
                 VStack {
@@ -38,9 +38,11 @@ struct ContentView: View {
                     case .red:
                         Text("**RED** you won!")
                             .foregroundColor(.red)
+                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                     case .yellow:
                         Text("**YELLOW** you won!")
                             .foregroundColor(.yellow)
+                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                     default:
                         EmptyView()
                     }
@@ -60,9 +62,9 @@ struct ContentView: View {
                 }.font(.largeTitle)
             }
 
-            HStack {
+            HStack(spacing: 10) {
                 ForEach(0..<7, id: \.self) { column in
-                    VStack {
+                    VStack(spacing: 10) {
                         Button {
                             model.addPiece(in: column)
                             if let activeSymbol = model.activeSymbol {
@@ -75,10 +77,9 @@ struct ContentView: View {
                                     model.activeSymbol = .red
                                 }
                             }
-                            
+
                             model.winner = model.checkEnd()
-                            
-                            
+
                         } label: {
                             Color.green
                                 .frame(height: 40)
@@ -105,18 +106,22 @@ struct SquareView: View {
 
     var body: some View {
         Color(uiColor: .secondarySystemBackground)
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(16)
+            .shadow(
+                color: Color(uiColor: .label).opacity(0.25),
+                radius: 5,
+                x: 0,
+                y: 3
+            )
             .overlay {
                 VStack {
                     if let symbol = symbol {
                         switch symbol {
                         case .red:
-                            Circle()
-                                .fill(.red)
-                                .transition(.scale)
+                            CirclePiece(color: .red, borderColor: .yellow)
                         case .yellow:
-                            Circle()
-                                .fill(.yellow)
-                                .transition(.scale)
+                            CirclePiece(color: .yellow, borderColor: .red)
                         case .tie:
                             EmptyView()
                         }
@@ -125,9 +130,39 @@ struct SquareView: View {
                 .padding(16)
             }
             .font(.largeTitle)
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(16)
-            .shadow(radius: 3)
+    }
+}
+
+struct CirclePiece: View {
+    let color: Color
+    let borderColor: Color
+    let lineWidth = CGFloat(6)
+    
+    var body: some View {
+        Circle()
+            .fill(color)
+            .overlay(
+                Circle()
+                    .stroke(
+                        borderColor,
+                        style: StrokeStyle(
+                            lineWidth: lineWidth,
+                            lineCap: .butt,
+                            lineJoin: .miter,
+                            miterLimit: 10,
+                            dash: [10],
+                            dashPhase: 0
+                        )
+                    )
+                    .padding(lineWidth / 2)
+            )
+            .shadow(
+                color: Color(uiColor: .label).opacity(0.4),
+                radius: 3,
+                x: 0,
+                y: 2
+            )
+            .transition(.offset(x: 0, y: -1000))
     }
 }
 

@@ -40,7 +40,7 @@ class ViewModel: ObservableObject {
             return .yellow
         }
 
-        if pieces.count == 9 {
+        if pieces.count >= 42 {
             return .tie
         }
         return nil
@@ -93,9 +93,9 @@ class ViewModel: ObservableObject {
         for column in 3 ..< 7 {
             for row in 0 ..< 3 {
                 let location0 = Location(row: row, column: column)
-                let location1 = Location(row: row - 1, column: column - 1)
-                let location2 = Location(row: row - 2, column: column - 2)
-                let location3 = Location(row: row - 3, column: column - 3)
+                let location1 = Location(row: row + 1, column: column - 1)
+                let location2 = Location(row: row + 2, column: column - 2)
+                let location3 = Location(row: row + 3, column: column - 3)
 
                 if
                     locations.contains(location0),
