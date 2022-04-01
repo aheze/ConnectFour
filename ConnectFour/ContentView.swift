@@ -114,6 +114,7 @@ struct ContentView: View {
                             )
                             .scaleEffect(model.winner != nil ? 1 : 0.8)
                             .animation(.spring().delay(delay), value: model.winner)
+                            .opacity(disabledColumn(column: column) ? 0.3 : 1)
 
                             ForEach(Array(0..<6).reversed(), id: \.self) { row in
                                 let location = Location(row: row, column: column)
@@ -123,6 +124,7 @@ struct ContentView: View {
                             }
                         }
                     }
+                    .disabled(disabledColumn(column: column))
                 }
             }
             .disabled(model.winner != nil)
@@ -130,6 +132,12 @@ struct ContentView: View {
         .padding(20)
     }
 
+    /// disable column if already full
+    func disabledColumn(column: Int) -> Bool {
+        let columnPieces = model.pieces.filter { $0.location.column == column }
+        return columnPieces.count >= 6
+    }
+    
     func getRemovalDelay(column: Int, row: Int) -> Double {
         let delay = Double(column) * Double(row) * 0.1
         return delay
