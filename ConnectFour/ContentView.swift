@@ -20,14 +20,14 @@ struct ContentView: View {
                 HStack(spacing: 20) {
                     switch winner {
                     case .red:
-                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 2)
+                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 3)
                             .frame(width: 40, height: 40)
 
                         Text("RED you won!")
                             .foregroundColor(.red)
 
                     case .yellow:
-                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 2)
+                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 3)
                             .frame(width: 40, height: 40)
 
                         Text("YELLOW you won!")
@@ -52,13 +52,13 @@ struct ContentView: View {
                 HStack(spacing: 20) {
                     switch activeSymbol {
                     case .red:
-                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 2)
+                        CirclePiece(color: .red, borderColor: .yellow, lineWidth: 3)
                             .frame(width: 40, height: 40)
 
                         Text("RED it's your turn")
                             .foregroundColor(.red)
                     case .yellow:
-                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 2)
+                        CirclePiece(color: .yellow, borderColor: .red, lineWidth: 3)
                             .frame(width: 40, height: 40)
                         Text("YELLOW it's your turn")
                             .foregroundColor(.yellow)
@@ -211,6 +211,12 @@ struct CirclePiece: View {
                 radius: 3,
                 x: 0,
                 y: 2
+            )
+            .overlay(
+                Text("C")
+                    .font(.system(size: lineWidth * 9, weight: .black, design: .monospaced))
+                    .foregroundColor(.black)
+                    .opacity(0.1)
             )
             .transition(.offset(x: 0, y: -1000).combined(with: .opacity))
     }
