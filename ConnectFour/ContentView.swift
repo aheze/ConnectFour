@@ -191,8 +191,8 @@ struct CirclePiece: View {
                         borderColor,
                         style: StrokeStyle(
                             lineWidth: lineWidth,
-                            lineCap: .butt,
-                            lineJoin: .miter,
+                            lineCap: .round,
+                            lineJoin: .round,
                             miterLimit: lineWidth * 2,
                             dash: [lineWidth * 2],
                             dashPhase: 0
